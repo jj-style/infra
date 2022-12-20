@@ -1,0 +1,20 @@
+[global]
+    workgroup = {{ samba.workgroup }}
+    server string = {{ samba.server_string }}
+    security = user
+    guest ok = yes
+    map to guest = Bad Password
+    log file = /var/log/samba/%m.log
+    max log size = 50
+    printcap name = /dev/null
+    load printers = no
+
+# Samba Shares
+{% for share in samba_shares %}
+[{{share.name}}]
+    comment = {{ share.comment }}
+    path = {{ share.path }}
+    browseable = {{ share.browseable }}
+    read only = {{ share.read_only }}
+    guest ok = {{ share.guest_ok }}
+{% endfor %}

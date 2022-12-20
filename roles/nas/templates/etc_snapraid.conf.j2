@@ -1,0 +1,22 @@
+# SnapRAID configuration file
+
+# Parity location(s)
+{% for disk in snapraid_disks %}
+parity {{disk.path}}/snapraid.parity
+{% endfor %}
+
+# Content file location(s)
+content /var/snapraid.content
+{% for disk in data_disks %}
+content {{ disk.path }}/.snapraid.content
+{% endfor %}
+
+# Data disks
+{% for disk in data_disks %}
+data {{ disk.snapraid_name }} {{ disk.path }}
+{% endfor %}
+
+# Excludes hidden files and directories
+{% for pattern in snapraid_config_excludes %}
+exclude {{ pattern }}
+{% endfor %}

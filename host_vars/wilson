@@ -1,0 +1,91 @@
+# general system stuff
+user:
+  username: jj
+  group: jj
+  name: JJ Style
+  email: style.jj@pm.me
+
+hostname: wilson
+
+ssh_public_keys:
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKs6D7W+lPdOTmr09wsv8YnPusuaxkQ0OadKQKyq4CMN ansible"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICRUbVjKjmxaxiIOFzysNqF1+dTHPYPCOGlKKVfO2bxi samsung-s6l"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPKIH9dy21Or2glbdRkaehiGQBA9fhqSLlteKS7otVH2 jj@xperia10"
+
+# applications
+
+## general
+general_pkgs:
+  - vim
+  - tmux
+  - ranger
+  - fd-find
+  - ripgrep
+  - git
+  - fzf
+  - fonts-powerline 
+  - bat
+  - direnv
+  - curl
+  - wget
+  - rsync
+
+## server specific genericly named
+server_pkgs:
+  - mergerfs
+  - btrfs-progs
+  - samba
+  - avahi-daemon
+  - ufw
+
+systemd_services:
+  - docker
+  - avahi-daemon
+  - smbd
+  - ufw
+
+# disks
+data_disks:
+  - src: /dev/disk/by-id/ata-SAMSUNG_HD501LJ_S0MUJ1GP729243-part1
+    path: /mnt/disk1
+    opts: defaults
+    fstype: ext4
+    snapraid_name: d1
+  - src: /dev/disk/by-id/ata-WD5003ABYX-88_LEN_WD-WMAYP8199250-part1
+    path: /mnt/disk2
+    opts: defaults
+    fstype: ext4
+    snapraid_name: d2
+
+mergerfs_disks:
+  - src: /mnt/disk*
+    path: /mnt/storage
+    opts: defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,category.create=epmfs,dropcacheonclose=true,fsname=mergerfs,minfreespace=10G
+    fstype: fuse.mergerfs
+
+snapraid_disks:
+  - src: /dev/disk/by-id/wwn-0x5000039872601ef4-part1
+    path: /mnt/parity1
+    opts: defaults
+    fstype: ext4
+
+## snapraid
+snapraid_config_excludes:
+  - "*.unrecoverable"
+  - "/tmp/"
+  - "/lost+found/"
+  - "downloads/"
+  - "appdata/"
+  - "*.!sync"
+  - ".AppleDouble"
+  - "._AppleDouble"
+  - ".DS_Store"
+  - "._.DS_Store"
+  - ".Thumbs.db"
+  - ".fseventsd"
+  - ".Spotlight-V100"
+  - ".TemporaryItems"
+  - ".Trashes"
+  - ".AppleDB"
+  - ".nfo"
+  - ".minio.sys/"

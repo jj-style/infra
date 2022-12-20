@@ -1,0 +1,53 @@
+- name: install snapraid
+  tags: install
+  ansible.builtin.shell: |
+    mkdir ~/tmp && cd ~/tmp
+    git clone https://github.com/IronicBadger/docker-snapraid
+    cd docker-snapraid
+    chmod +x build.sh
+    ./build.sh
+    sudo dpkg -i build/snapraid-from-source.deb
+    rm -rf ~/tmp
+    exit 0
+  args:
+    creates: /usr/local/bin/snapraid
+
+- name: template snapraid config
+  tags: config
+  ansible.builtin.template:
+    src: etc_snapraid.conf.j2
+    dest: /etc/snapraid.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: clone snapraid-runner script
+  git:
+    repo: https://github.com/Chronial/snapraid-runner.git
+    dest: /opt/snapraid-runner
+    clone: yes
+    update: yes
+
+- name: template snapraid-runner config
+  tags: snapraid-runner
+  ansible.builtin.template:
+    src: opt_snapraid-runner_snapraid-runner.conf.j2
+    dest: /opt/snapraid-runner/snapraid-runner.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Create a cron job for snapraid-runner
+  tags: cron
+  ansible.builtin.cron:
+    name: snapraid-runner
+    minute: "00"
+    hour: "03"
+    day: "*"
+    month: "*"
+    weekday: "*"
+    user: root
+    job: "python3 /opt/snapraid-runner/snapraid-runner.py -c /opt/snapraid-runner/snapraid-runner.conf > /dev/null && curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/e547ba5d-5435-4882-835e-56609ff462ad"
+    state: present
+    cron_file: snapraid-runner
+    backup: true

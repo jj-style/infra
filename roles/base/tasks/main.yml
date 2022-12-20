@@ -1,0 +1,55 @@
+- name: create main user
+  user:
+    name: "{{ user.username }}"
+    groups:
+      - root
+    append: true
+
+- name: add sudoers file for main user
+  ansible.builtin.template:
+    src: users/sudoer_user.j2
+    dest: "/etc/sudoers.d/{{ user.username }}"
+    owner: root
+    group: root
+    mode: 0440
+
+- name: add ssh public key for main user
+  tags: ssh
+  authorized_key:
+    user: "{{ user.username }}"
+    key: "{{ item }}"
+  loop: "{{ ssh_public_keys }}"
+
+- name: Prevent SSH Password Authentication
+  tags: ssh
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?\s*PasswordAuthentication\s'
+    line: "PasswordAuthentication no"
+    state: present
+  notify:
+    - restart sshd
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+
+- name: install general system packages
+  tags: install
+  package:
+    name: "{{ item }}"
+    update_cache: true
+  loop: "{{ general_pkgs }}"
+
+- name: Create necessary directories
+  become_user: "{{ user.username }}"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - $HOME/.local/bin
+    - $HOME/.config/chezmoi
+
+- block:
+  - include_tasks: chezmoi.yml
