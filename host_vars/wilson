@@ -37,6 +37,7 @@ server_pkgs:
   - samba
   - avahi-daemon
   - ufw
+  - sqlite3
 
 systemd_services:
   - docker

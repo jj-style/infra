@@ -133,3 +133,12 @@
     clone: yes
     update: yes
     accept_hostkey: true
+
+## Selfhosted Services Stuff
+- name: Create cronjob to backup linkding database
+  tags: cron,selfhosted,never
+  become_user: "{{ user.username }}"
+  ansible.builtin.cron:
+    name: "backup-linkding"
+    special_time: "daily"
+    job: "sqlite3 /opt/linkding/db.sqlite3 \".backup '/home/jj/docker-data/linkding/backup.sqlite3'\""
