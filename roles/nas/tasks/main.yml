@@ -86,23 +86,23 @@
       tags: vpn,tailscale
   tags: always
 
-- name: Run ProtonVPN Docker Container
-  tags: vpn,protonvpn
-  docker_container:
-    name: protonvpn
-    image: ghcr.io/tprasadtp/protonvpn:latest
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    capabilities:
-      - NET_ADMIN
-    restart_policy: unless-stopped
-    state: started
-    network_mode: host
-    env:
-      PROTONVPN_TIER: "{{ protonvpn.tier }}" 
-      PROTONVPN_USERNAME: "{{ protonvpn.username }}"
-      PROTONVPN_PASSWORD: "{{ protonvpn.password }}"
-      PROTONVPN_SERVER: "{{ protonvpn.server }}"
+#- name: Run ProtonVPN Docker Container
+  #tags: vpn,protonvpn
+  #docker_container:
+    #name: protonvpn
+    #image: ghcr.io/tprasadtp/protonvpn:latest
+    #devices:
+      #- /dev/net/tun:/dev/net/tun
+    #capabilities:
+      #- NET_ADMIN
+    #restart_policy: unless-stopped
+    #state: started
+    #network_mode: host
+    #env:
+      #PROTONVPN_TIER: "{{ protonvpn.tier }}" 
+      #PROTONVPN_USERNAME: "{{ protonvpn.username }}"
+      #PROTONVPN_PASSWORD: "{{ protonvpn.password }}"
+      #PROTONVPN_SERVER: "{{ protonvpn.server }}"
 
 - name: Copy SSH Public Keys
   become_user: "{{ user.username }}"
