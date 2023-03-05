@@ -35,11 +35,30 @@
     name: "{{ hostname }}"
 
 - name: install general system packages
-  tags: install
+  tags: install, general
   package:
     name: "{{ item }}"
     update_cache: true
   loop: "{{ general_pkgs }}"
+
+- name: Add the flathub flatpak repository remote to the user installation
+  become_user: "{{ user.username }}"
+  tags: flatpak
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+
+- name: install general flatpak packages
+  become_user: "{{ user.username }}"
+  tags: install, general, flatpak
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    method: user
+  loop: "{{ general_flatpak_pkgs }}"
+
 
 - name: Create necessary directories
   become_user: "{{ user.username }}"
