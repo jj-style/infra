@@ -1,0 +1,16 @@
+---
+- hosts: scooby
+  become: true
+  roles:
+    - base
+    - role: artis3n.tailscale
+      apply:
+        tags: vpn,tailscale
+    - role: chezmoi
+      apply:
+        tags: chezmoi
+      tags: chezmoi
+    - vps
+  vars_files:
+    - "vars/scooby-vault.yml"
+

@@ -1,0 +1,41 @@
+# general system stuff
+user:
+  username: jj
+  group: jj
+  name: JJ Style
+  email: style.jj@pm.me
+
+hostname: scooby
+
+ssh_public_keys:
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKs6D7W+lPdOTmr09wsv8YnPusuaxkQ0OadKQKyq4CMN ansible"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICRUbVjKjmxaxiIOFzysNqF1+dTHPYPCOGlKKVfO2bxi samsung-s6l"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPKIH9dy21Or2glbdRkaehiGQBA9fhqSLlteKS7otVH2 jj@xperia10"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxm8Qo66wmrE1O9lM9u1AmNpp1WRef3WrmQ5fjKNBEf jj@nixos"
+
+# applications
+
+## general
+pkgs:
+  - vim
+  - tmux
+  - ranger
+  - fd-find
+  - ripgrep
+  - git
+  - fzf
+  - fonts-powerline 
+  - bat
+  - direnv
+  - curl
+  - wget
+  - rsync
+  - flatpak
+  - ufw
+  - sudo
+
+flatpak_pkgs: []
+
+systemd_services:
+  - docker
+  - ufw

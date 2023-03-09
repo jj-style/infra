@@ -1,3 +1,13 @@
+---
+- name: Create necessary directories
+  become_user: "{{ user.username }}"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - $HOME/.local/bin
+    - $HOME/.config/chezmoi
 
 - name: install chezmoi
   become_user: "{{ user.username }}"
@@ -17,7 +27,7 @@
 - name: initialize and apply chezmoi dotfiles repository
   become_user: "{{ user.username }}"
   command:
-    cmd: ./chezmoi init --apply http://git.home.jjstyle.co.uk/jj-style/dotfiles.git
+    cmd: ./chezmoi init --apply {{ chezmoi_repo }}
     chdir: $HOME/.local/bin
     creates: $HOME/.local/share/chezmoi
 

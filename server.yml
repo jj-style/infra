@@ -4,5 +4,6 @@
   roles:
     - base
     - nas
+    - chezmoi
   vars_files:
     - "vars/vault.yml"

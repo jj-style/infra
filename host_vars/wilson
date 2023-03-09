@@ -16,7 +16,7 @@ ssh_public_keys:
 # applications
 
 ## general
-general_pkgs:
+pkgs:
   - vim
   - tmux
   - ranger
@@ -31,18 +31,17 @@ general_pkgs:
   - wget
   - rsync
   - flatpak
-
-general_flatpak_pkgs:
-  - com.microsoft.Edge
-
-## server specific genericly named
-server_pkgs:
+# server pkgs
   - mergerfs
   - btrfs-progs
   - samba
   - avahi-daemon
   - ufw
   - sqlite3
+
+
+flatpak_pkgs:
+  - com.microsoft.Edge
 
 systemd_services:
   - docker

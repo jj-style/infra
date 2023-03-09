@@ -1,23 +1,5 @@
-- name: install applications
-  tags: install
-  package:
-    name: "{{ item }}"
-    state: latest
-    update_cache: true
-  loop: "{{ server_pkgs }}"
+---
 
-- block:
-  - include_tasks: install-docker.yml
-    when:
-      - ansible_distribution in ["Debian", "Pop!_OS", "Ubuntu"]
-  
-- name: start/enable services
-  tags: systemd
-  service:
-    name: "{{ item }}"
-    state: started
-    enabled: yes
-  loop: "{{ systemd_services }}"
 
 - name: mask sleep/suspend services
   tags: systemd

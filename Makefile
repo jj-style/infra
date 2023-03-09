@@ -15,11 +15,15 @@ init:
 
 .PHONY: decrypt
 decrypt:
-	ansible-vault decrypt vars/vault.yml
+	for file in vars/*vault.yml; do \
+		ansible-vault decrypt $$file; \
+	done
 
 .PHONY: encrypt
 encrypt:
-	ansible-vault encrypt vars/vault.yml
+	for file in vars/*vault.yml; do \
+		ansible-vault encrypt $$file; \
+	done
 
 TAGS ?= 
 TAGS_ARG := $(if $(TAGS),--tags $(TAGS),)

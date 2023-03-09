@@ -1,0 +1,14 @@
+---
+- name: Enable IPv4 forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- block:
+  - include_tasks:
+      file: ufw_firewall.yml
+      apply:
+        tags: firewall,ufw

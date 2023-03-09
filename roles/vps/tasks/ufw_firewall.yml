@@ -1,0 +1,47 @@
+- name: ufw allow ssh
+  tags: firewall
+  ufw:
+    rule: limit
+    app: openssh
+
+- name: ufw allow http
+  tags: firewall
+  ufw:
+    rule: allow
+    port: 80
+    proto: tcp
+
+- name: ufw allow https
+  tags: firewall
+  ufw:
+    rule: allow
+    port: 443
+    proto: tcp
+
+- name: ufw allow all access from speicifed IP addresses
+  tags: firewall
+  ufw:
+    rule: allow
+    src: "{{ item }}"
+  loop: "{{ ufw_allowed_ips }}"
+
+- name: ufw allow tailscale traffic
+  tags: firewall
+  ufw:
+    rule: allow
+    direction: in
+    interface: tailscale0
+
+- name: ufw allow wireguard traffic
+  tags: firewall
+  ufw:
+    rule: allow
+    port: 51820
+    proto: udp
+
+- name: enable ufw
+  tags: firewall
+  ufw:
+    state: enabled
+    policy: deny
+    logging: on
