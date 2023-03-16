@@ -5,5 +5,9 @@
     - base
     - nas
     - chezmoi
+    - role: diun
+      apply:
+        tags: diun
+      tags: diun
   vars_files:
     - "vars/vault.yml"

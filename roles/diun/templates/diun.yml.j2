@@ -1,0 +1,19 @@
+watch:
+  workers: 20
+  schedule: "0 */6 * * *"
+
+providers:
+  docker:
+    watchStopped: "{{ diun.watch_stopped | default('false') }}"
+    watchByDefault: "{{ diun.watch_by_default | default('true') }}"
+
+notif:
+  gotify:
+    endpoint: "{{ diun.gotify.endpoint }}"
+    token: "{{ diun.gotify.token }}"
+    priority: "{{ diun.gotify.priority | default('1') }}"
+    timeout: "{{ diun.gotify.timeout | default('10s') }}"
+    templateTitle: "{% raw %}{{ .Entry.Image }}{% endraw %} released"
+    templateBody: |
+      Docker tag {% raw %}{{ .Entry.Image }}{% endraw %} has been released.
+
