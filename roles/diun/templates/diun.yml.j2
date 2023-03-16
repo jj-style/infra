@@ -13,7 +13,4 @@ notif:
     token: "{{ diun.gotify.token }}"
     priority: "{{ diun.gotify.priority | default('1') }}"
     timeout: "{{ diun.gotify.timeout | default('10s') }}"
-    templateTitle: "{% raw %}{{ .Entry.Image }}{% endraw %} released"
-    templateBody: |
-      Docker tag {% raw %}{{ .Entry.Image }}{% endraw %} has been released.
 
