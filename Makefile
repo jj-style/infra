@@ -11,7 +11,7 @@ all:
 
 .PHONY: init
 init:
-	./git-init.sh
+	@bash git-init.sh
 
 .PHONY: decrypt
 decrypt:

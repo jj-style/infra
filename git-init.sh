@@ -5,7 +5,7 @@
 # https://gitlab.com/NickBusey/HomelabOS/-/issues/355
 
 if [ -d .git/ ]; then
-rm .git/hooks/pre-commit
+[ -f .git/hooks/pre-commit ] && rm .git/hooks/pre-commit
 cat <<EOT >> .git/hooks/pre-commit
 for file in vars/*vault.yml; do
     if ( git show :\$file | grep -q "\$ANSIBLE_VAULT;" ); then
