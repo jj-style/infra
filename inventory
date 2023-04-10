@@ -1,4 +1,9 @@
 [nas]
 qemu-vm:22220
 wilson
+
+[vps]
 scooby
+
+[litecoin]
+snowy:22220

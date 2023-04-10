@@ -5,7 +5,7 @@ user:
   name: JJ Style
   email: style.jj@pm.me
 
-hostname: scooby
+hostname: snowy
 
 ssh_public_keys:
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKs6D7W+lPdOTmr09wsv8YnPusuaxkQ0OadKQKyq4CMN ansible"
@@ -36,7 +36,7 @@ pkgs:
 
 flatpak_pkgs: []
 
-install_docker: true
-
 systemd_services:
   - ufw
+
+install_docker: false

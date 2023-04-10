@@ -1,0 +1,6 @@
+---
+- block:
+  - include_tasks:
+      file: ufw_firewall.yml
+      apply:
+        tags: firewall,ufw

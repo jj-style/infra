@@ -41,7 +41,7 @@
   package:
     name: "{{ item }}"
     update_cache: true
-  loop: "{{ pkgs }}"
+  loop: "{{ pkgs | default([]) }}"
 
 - name: Add the flathub flatpak repository remote to the user installation
   become_user: "{{ user.username }}"
@@ -51,6 +51,7 @@
     state: present
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     method: user
+  when: '"flatpak" in pkgs'
 
 - name: install general flatpak packages
   become_user: "{{ user.username }}"
@@ -59,7 +60,8 @@
     name: "{{ item }}"
     state: present
     method: user
-  loop: "{{ flatpak_pkgs }}"
+  loop: "{{ flatpak_pkgs | default([]) }}"
+  when: '"flatpak" in pkgs'
 
 - name: install docker
   include_role:
@@ -69,6 +71,7 @@
   tags: docker
   when:
     - ansible_distribution in ["Debian", "Pop!_OS", "Ubuntu"]
+    - install_docker | bool
 
 - name: start/enable services
   tags: systemd

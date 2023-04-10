@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: wilson
   become: true
   roles:
     - base

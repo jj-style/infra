@@ -39,3 +39,9 @@
     name: "{{ user.username }}"
     groups: docker
     append: yes
+
+- name: start and enable docker systemd service
+  service:
+    name: docker
+    state: started
+    enabled: yes

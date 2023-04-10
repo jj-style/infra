@@ -39,8 +39,9 @@ server_pkgs:
   - ufw
   - sqlite3
 
+install_docker: true
+
 systemd_services:
-  - docker
   - avahi-daemon
   - smbd
   - ufw

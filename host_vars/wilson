@@ -44,10 +44,11 @@ flatpak_pkgs:
   - com.microsoft.Edge
 
 systemd_services:
-  - docker
   - avahi-daemon
   - smbd
   - ufw
+
+install_docker: true
 
 # disks
 data_disks:
