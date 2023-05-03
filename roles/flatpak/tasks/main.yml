@@ -1,0 +1,21 @@
+---
+- name: Install flatpak
+  ansible.builtin.package:
+    name: flatpak
+    state: present
+
+- name: Add the flathub flatpak repository remote to the user installation
+  become_user: "{{ user.username }}"
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+
+- name: install general flatpak packages
+  become_user: "{{ user.username }}"
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    method: user
+  loop: "{{ flatpak_pkgs | default([]) }}"

@@ -51,6 +51,8 @@
     tags: always
   - include_tasks: services.yml
   - include_tasks: ufw_firewall.yml
+    apply:
+      tags: firewall,ufw
     tags: firewall,ufw
 
 - name: Enable IPv4 forwarding
@@ -60,13 +62,6 @@
     sysctl_set: yes
     state: present
     reload: yes
-
-- name: Configure Tailscale
-  include_role:
-    name: artis3n.tailscale
-    apply:
-      tags: vpn,tailscale
-  tags: always
 
 - name: Run ProtonVPN Docker Container
   tags: vpn,protonvpn
@@ -86,26 +81,19 @@
       PROTONVPN_PASSWORD: "{{ protonvpn.password }}"
       PROTONVPN_SERVER: "{{ protonvpn.server }}"
 
-- name: Copy SSH Public Keys
+- name: Write SSH Public Key
   become_user: "{{ user.username }}"
   ansible.builtin.copy:
-    content: "{{ lookup('community.general.bitwarden', 'nas_ssh_key', field='username')[0] }}"
     dest: $HOME/.ssh/id_ed25519.pub
     mode: 0644
+    content: "{{ ssh_public_key }}"
 
-- name: Copy SSH Private Key
+- name: Write SSH Private Key
   become_user: "{{ user.username }}"
   ansible.builtin.copy:
-    content: "{{ lookup('community.general.bitwarden', 'nas_ssh_key', field='password')[0] }}"
     dest: $HOME/.ssh/id_ed25519
     mode: 0600
-
-- name: Split SSH Private Key From 1 To 3 Lines
-  become_user: "{{ user.username }}"
-  ansible.builtin.shell: |
-    [[ $(/bin/cat .ssh/id_ed25519 | wc -l) -eq 0 ]] && sed -i -e 's/\$/\n/g' ~/.ssh/id_ed25519
-  args:
-    executable: /bin/bash
+    content: "{{ ssh_private_key }}"
 
 - name: Clone selfhosted-config git repository
   become_user: "{{ user.username }}"

@@ -13,32 +13,33 @@ ssh_public_keys:
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPKIH9dy21Or2glbdRkaehiGQBA9fhqSLlteKS7otVH2 jj@xperia10"
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxm8Qo66wmrE1O9lM9u1AmNpp1WRef3WrmQ5fjKNBEf jj@nixos"
 
-# applications
+# geerlinguy.docker
+docker_users:
+  - jj
 
-## general
-pkgs:
-  - vim
-  - tmux
-  - ranger
-  - fd-find
-  - ripgrep
-  - git
-  - fzf
-  - fonts-powerline 
-  - bat
-  - direnv
-  - curl
-  - wget
-  - rsync
-  - flatpak
+## grod.packages
+package_list:
+  - name: vim
+  - name: tmux
+  - name: ranger
+  - name: fd-find
+  - name: ripgrep
+  - name: git
+  - name: fzf
+  - name: fonts-powerline 
+  - name: bat
+  - name: direnv
+  - name: curl
+  - name: wget
+  - name: rsync
+  - name: flatpak
 # server pkgs
-  - mergerfs
-  - btrfs-progs
-  - samba
-  - avahi-daemon
-  - ufw
-  - sqlite3
-
+  - name: mergerfs
+  - name: btrfs-progs
+  - name: samba
+  - name: avahi-daemon
+  - name: ufw
+  - name: sqlite3
 
 flatpak_pkgs:
   - com.microsoft.Edge
@@ -47,8 +48,6 @@ systemd_services:
   - avahi-daemon
   - smbd
   - ufw
-
-install_docker: true
 
 # disks
 data_disks:

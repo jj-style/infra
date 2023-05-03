@@ -1,0 +1,26 @@
+---
+- hosts: wilson
+  become: true
+  roles:
+    - role: grog.package
+    - role: flatpak
+      apply:
+        tags: flatpak
+      tags: flatpak
+    - base
+    
+    - role: geerlingguy.docker
+    
+    - role: artis3n.tailscale
+      apply:
+        tags: vpn,tailscale
+      tags: vpn,tailscale
+    
+    - chezmoi
+    - nas
+    - role: diun
+      apply:
+        tags: diun
+      tags: diun
+  vars_files:
+    - "../vars/vault.yml"

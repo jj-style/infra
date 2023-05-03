@@ -2,7 +2,11 @@
 - hosts: scooby
   become: true
   roles:
+    - role: grog.package
     - base
+
+    - role: geerlingguy.docker
+    
     - role: artis3n.tailscale
       apply:
         tags: vpn,tailscale
@@ -13,5 +17,5 @@
       tags: chezmoi
     - vps
   vars_files:
-    - "vars/scooby-vault.yml"
+    - "../vars/scooby-vault.yml"
 

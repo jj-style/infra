@@ -12,6 +12,7 @@ all:
 .PHONY: init
 init:
 	@bash git-init.sh
+	@ansible-galaxy install -r requirements.yml
 
 .PHONY: decrypt
 decrypt:
@@ -30,15 +31,15 @@ TAGS_ARG := $(if $(TAGS),--tags $(TAGS),)
 
 .PHONY: test
 test:
-	ansible-playbook --check --ask-become-pass $(TAGS_ARG) server.yml
+	ansible-playbook --check $(TAGS_ARG) playbooks/server.yml
 
 .PHONY: run
 run:
-	ansible-playbook --ask-become-pass $(TAGS_ARG) server.yml
+	ansible-playbook $(TAGS_ARG) playbooks/server.yml
 
 .PHONY: check
 check:
-	ansible-playbook --syntax-check --verbose server.yml
+	ansible-playbook --syntax-check --verbose playbooks/server.yml
 
 .PHONY: bwunlock
 bwunlock:

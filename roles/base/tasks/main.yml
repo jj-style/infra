@@ -36,44 +36,6 @@
   ansible.builtin.hostname:
     name: "{{ hostname }}"
 
-- name: install packages
-  tags: install, general
-  package:
-    name: "{{ item }}"
-    update_cache: true
-    state: latest
-  loop: "{{ pkgs | default([]) }}"
-
-- name: Add the flathub flatpak repository remote to the user installation
-  become_user: "{{ user.username }}"
-  tags: flatpak
-  community.general.flatpak_remote:
-    name: flathub
-    state: present
-    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
-    method: user
-  when: '"flatpak" in pkgs'
-
-- name: install general flatpak packages
-  become_user: "{{ user.username }}"
-  tags: install, general, flatpak
-  community.general.flatpak:
-    name: "{{ item }}"
-    state: present
-    method: user
-  loop: "{{ flatpak_pkgs | default([]) }}"
-  when: '"flatpak" in pkgs'
-
-- name: install docker
-  include_role:
-    name: docker
-    apply:
-      tags: docker
-  tags: docker
-  when:
-    - ansible_distribution in ["Debian", "Pop!_OS", "Ubuntu"]
-    - install_docker | bool
-
 - name: start/enable services
   tags: systemd
   service:
