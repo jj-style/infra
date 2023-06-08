@@ -33,6 +33,7 @@ package_list:
   - name: wget
   - name: rsync
   - name: flatpak
+  - name: easytag
 # server pkgs
   - name: mergerfs
   - name: btrfs-progs

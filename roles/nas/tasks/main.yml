@@ -50,9 +50,10 @@
         tags: snapraid
     tags: always
   - include_tasks: services.yml
-  - include_tasks: ufw_firewall.yml
-    apply:
-      tags: firewall,ufw
+  - include_tasks:
+      file: ufw_firewall.yml
+      apply:
+        tags: firewall,ufw
     tags: firewall,ufw
 
 - name: Enable IPv4 forwarding

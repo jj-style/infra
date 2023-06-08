@@ -3,6 +3,9 @@
   become: true
   roles:
     - role: grog.package
+      apply:
+        tags: packages
+      tags: packages
     - role: flatpak
       apply:
         tags: flatpak
