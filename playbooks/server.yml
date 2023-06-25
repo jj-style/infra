@@ -6,6 +6,10 @@
       apply:
         tags: packages
       tags: packages
+    - role: ironicbadger.bash_aliases
+      apply:
+        tags: bash_aliases
+      tags: bash_aliases
     - role: flatpak
       apply:
         tags: flatpak

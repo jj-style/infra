@@ -2,5 +2,6 @@ roles:
   - src: artis3n.tailscale
   - src: geerlingguy.docker
   - src: grog.package
+  - src: ironicbadger.bash_aliases
 collections:
   - name: community.docker
