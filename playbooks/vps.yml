@@ -11,6 +11,10 @@
       apply:
         tags: vpn,tailscale
       tags: vpn,tailscale
+    - role: wireguard
+      apply:
+        tags: vpn,wireguard
+      tags: vpn,wireguard
     - role: chezmoi
       apply:
         tags: chezmoi

@@ -1,0 +1,23 @@
+[Interface]
+Address = {{ wireguard.server.address }}
+{% if wireguard.server.post_up is defined %}
+PostUp = {{ wireguard.server.post_up }}
+{% endif %}
+{% if wireguard.server.post_down is defined %}
+PostDown = {{ wireguard.server.post_down }}
+{% endif %}
+ListenPort = {{ wireguard.server.port }}
+PrivateKey = {{ wireguard.server.private_key }}
+
+{% for peer in wireguard.peers %}
+[Peer]
+# {{ peer.name }}
+PublicKey = {{ peer.public_key }}
+AllowedIPs = {{ peer.allowed_ips }}
+{% if peer.endpoint %}
+Endpoint = {{ peer.endpoint }}
+{% endif %}
+{% if peer.persistent_keepalive %}
+PersistentKeepalive = {{ peer.persistent_keepalive }}
+{% endif %}
+{% endfor %}

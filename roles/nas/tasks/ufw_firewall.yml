@@ -24,6 +24,13 @@
     direction: in
     interface: tailscale0
 
+- name: ufw allow wireguard traffic
+  tags: firewall
+  ufw:
+    rule: allow
+    direction: in
+    interface: wg0
+
 - name: enable ufw
   tags: firewall
   ufw:

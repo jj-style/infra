@@ -18,6 +18,11 @@
     
     - role: geerlingguy.docker
     
+    - role: wireguard
+      apply:
+        tags: vpn,wireguard
+      tags: vpn,wireguard
+
     - role: artis3n.tailscale
       apply:
         tags: vpn,tailscale
