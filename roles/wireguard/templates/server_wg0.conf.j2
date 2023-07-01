@@ -6,7 +6,9 @@ PostUp = {{ wireguard.server.post_up }}
 {% if wireguard.server.post_down is defined %}
 PostDown = {{ wireguard.server.post_down }}
 {% endif %}
+{% if wireguard.server.port is defined %}
 ListenPort = {{ wireguard.server.port }}
+{% endif %}
 PrivateKey = {{ wireguard.server.private_key }}
 
 {% for peer in wireguard.peers %}
@@ -14,10 +16,10 @@ PrivateKey = {{ wireguard.server.private_key }}
 # {{ peer.name }}
 PublicKey = {{ peer.public_key }}
 AllowedIPs = {{ peer.allowed_ips }}
-{% if peer.endpoint %}
+{% if peer.endpoint is defined %}
 Endpoint = {{ peer.endpoint }}
 {% endif %}
-{% if peer.persistent_keepalive %}
+{% if peer.persistent_keepalive is defined %}
 PersistentKeepalive = {{ peer.persistent_keepalive }}
 {% endif %}
 {% endfor %}
