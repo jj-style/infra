@@ -1,0 +1,30 @@
+---
+- hosts: snowy
+  become: true
+  roles:
+    - role: bodsch.snapd
+    - role: grog.package
+    - base
+
+    - role: geerlingguy.docker
+    
+    - role: artis3n.tailscale
+      apply:
+        tags: vpn,tailscale
+      tags: vpn,tailscale
+    - role: wireguard
+      apply:
+        tags: vpn,wireguard
+      tags: vpn,wireguard
+    - role: chezmoi
+      apply:
+        tags: chezmoi
+      tags: chezmoi
+    - backup_server
+    - role: ansible-role-rsnapshot
+      apply:
+        tags: rsnapshot
+      tags: rsnapshot
+  vars_files:
+    - "../vars/snowy-vault.yml"
+

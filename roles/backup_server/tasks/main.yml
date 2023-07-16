@@ -1,0 +1,31 @@
+- block:
+  - include_tasks:
+      file: ufw_firewall.yml
+    args:
+      apply:
+        tags: firewall,ufw
+    tags: firewall,ufw
+
+- name: Write SSH Public Key
+  become_user: "{{ user.username }}"
+  ansible.builtin.copy:
+    dest: $HOME/.ssh/id_ed25519.pub
+    mode: 0644
+    content: "{{ ssh_public_key }}"
+
+- name: Write SSH Private Key
+  become_user: "{{ user.username }}"
+  ansible.builtin.copy:
+    dest: $HOME/.ssh/id_ed25519
+    mode: 0600
+    content: "{{ ssh_private_key }}"
+
+- name: mount disks
+  mount:
+    fstype: "{{ item.fstype }}"
+    opts: "{{ item.opts }}"
+    path: "{{ item.path }}"
+    src: "{{ item.src}}"
+    backup: true
+    state: mounted
+  loop: "{{ mount_disks | flatten(levels=1) }}"

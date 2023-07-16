@@ -1,0 +1,41 @@
+# general system stuff
+user:
+  username: jj
+  group: jj
+  name: JJ Style
+  email: style.jj@pm.me
+
+hostname: snowy
+
+ssh_public_keys:
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKs6D7W+lPdOTmr09wsv8YnPusuaxkQ0OadKQKyq4CMN ansible"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICRUbVjKjmxaxiIOFzysNqF1+dTHPYPCOGlKKVfO2bxi samsung-s6l"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxm8Qo66wmrE1O9lM9u1AmNpp1WRef3WrmQ5fjKNBEf jj@nixos"
+
+# geerlinguy.docker
+docker_users:
+  - jj
+
+## grod.packages
+package_list:
+  - name: vim
+  - name: tmux
+  - name: ranger
+  - name: fd-find
+  - name: ripgrep
+  - name: git
+  - name: fzf
+  - name: fonts-powerline 
+  - name: bat
+  - name: direnv
+  - name: curl
+  - name: wget
+  - name: rsync
+  - name: ufw
+  - name: sudo
+  - name: resolvconf
+
+systemd_services:
+  - ufw
+
+snapd_purge: true

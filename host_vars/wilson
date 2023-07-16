@@ -12,6 +12,8 @@ ssh_public_keys:
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICRUbVjKjmxaxiIOFzysNqF1+dTHPYPCOGlKKVfO2bxi samsung-s6l"
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPKIH9dy21Or2glbdRkaehiGQBA9fhqSLlteKS7otVH2 jj@xperia10"
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxm8Qo66wmrE1O9lM9u1AmNpp1WRef3WrmQ5fjKNBEf jj@nixos"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILc4QgNqLOBwxneJnOHbPsv+tM9iTNRaIv+73yFemCLn jj@snowy"
+
 
 # geerlinguy.docker
 docker_users:

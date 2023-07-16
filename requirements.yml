@@ -3,5 +3,7 @@ roles:
   - src: geerlingguy.docker
   - src: grog.package
   - src: ironicbadger.bash_aliases
+  - src: bodsch.snapd
+  - src: https://github.com/andornaut/ansible-role-rsnapshot
 collections:
   - name: community.docker
