@@ -29,3 +29,22 @@
     enabled: yes
     state: started
 
+- name: enable wireguard watchdog
+  template:
+    dest: /usr/local/bin/wg-watchdog.sh
+    src: watchdog.sh.j2
+    owner: root
+    group: root
+    mode: '0600'
+  when:  wireguard.watchdog.enabled|default(false)|bool
+
+- name: create cronjob for wireguard watchdog
+  ansible.builtin.cron:
+    user: root
+    name: "wireguard-watchdog"
+    backup: true
+    state: present
+    cron_file: wg-watchdog
+    minute: "*/5"
+    job: "bash /usr/local/bin/wg-watchdog.sh"
+  when: wireguard.watchdog.enabled|default(false)|bool
