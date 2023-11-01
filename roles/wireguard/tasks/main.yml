@@ -45,6 +45,6 @@
     backup: true
     state: present
     cron_file: wg-watchdog
-    minute: "*/5"
+    minute: "*/1"
     job: "bash /usr/local/bin/wg-watchdog.sh"
   when: wireguard.watchdog.enabled|default(false)|bool
