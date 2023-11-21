@@ -43,6 +43,7 @@ package_list:
   - name: avahi-daemon
   - name: ufw
   - name: sqlite3
+  - name: smartmontools
 
 flatpak_pkgs:
   - com.microsoft.Edge
