@@ -39,6 +39,8 @@ package_list:
 # server pkgs
   - name: mergerfs
   - name: btrfs-progs
+  - name: gddrescue
+  - name: xfsprogs
   - name: samba
   - name: avahi-daemon
   - name: ufw
@@ -73,10 +75,10 @@ mergerfs_disks:
     fstype: fuse.mergerfs
 
 snapraid_disks:
-  - src: /dev/disk/by-id/wwn-0x5000039872601ef4-part1
-    path: /mnt/parity1
+  - src: /dev/disk/by-id/ata-TOSHIBA_HDWT840_73R3S1V3SRZH-part1
+    path: /mnt/parity
     opts: defaults
-    fstype: ext4
+    fstype: xfs
 
 ## snapraid
 snapraid_config_excludes:

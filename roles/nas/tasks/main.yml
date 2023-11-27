@@ -14,6 +14,7 @@
 
 
 - name: mount data disks
+  tags: mount,fstab
   mount:
     fstype: "{{ item.fstype }}"
     opts: "{{ item.opts }}"
@@ -24,6 +25,7 @@
   loop: "{{ data_disks | flatten(levels=1) }}"
 
 - name: mount mergerfs
+  tags: mount,fstab
   mount:
     fstype: "{{ item.fstype }}"
     opts: "{{ item.opts }}"
@@ -34,6 +36,7 @@
   loop: "{{ mergerfs_disks | flatten(levels=1) }}"
 
 - name: mount snapraid parity drives
+  tags: mount,fstab
   mount:
     fstype: "{{ item.fstype }}"
     opts: "{{ item.opts }}"
@@ -48,7 +51,7 @@
       file: snapraid.yml
       apply:
         tags: snapraid
-    tags: always
+    tags: snapraid
   - include_tasks: services.yml
   - include_tasks:
       file: ufw_firewall.yml
