@@ -6,6 +6,7 @@
       apply:
         tags: packages
       tags: packages
+
     - role: ironicbadger.bash_aliases
       apply:
         tags: bash_aliases
@@ -17,6 +18,9 @@
     - base
     
     - role: geerlingguy.docker
+      apply:
+        tags: docker
+      tags: docker
     
     - role: wireguard
       apply:

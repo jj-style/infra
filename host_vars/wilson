@@ -46,6 +46,8 @@ package_list:
   - name: ufw
   - name: sqlite3
   - name: smartmontools
+  - name: libbtrfs-dev
+  - name: btrfs-compsize
 
 flatpak_pkgs:
   - com.microsoft.Edge

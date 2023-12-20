@@ -10,7 +10,7 @@
     rm -rf ~/tmp
     exit 0
   args:
-    creates: /usr/local/bin/snapraid
+    creates: /usr/bin/snapraid
 
 - name: template snapraid config
   tags: config
