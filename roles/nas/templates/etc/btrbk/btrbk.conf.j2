@@ -1,0 +1,17 @@
+snapshot_preserve_min  {{ item.snapshot_preserve_min }}
+snapshot_preserve      {{ item.snapshot_preserve }}
+
+target_preserve_min    {{ item.target_preserve_min }}
+target_preserve        {{ item.target_preserve }}
+
+timestamp_format       {{ item.timestamp_format | default('long') }}
+
+snapshot_dir           {{ item.snapshot_dir }}
+
+volume {{ item.volume }}
+  {% for target in item.targets %}
+  target {{ target }}
+  {% endfor %}
+  {% for subvolume in item.subvolumes %}
+  subvolume {{ subvolume }}
+  {% endfor %}

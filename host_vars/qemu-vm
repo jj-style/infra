@@ -59,8 +59,8 @@ systemd_services:
 # disks
 fstab_disks:
   - src: /dev/vda2
-    path: /mnt/tank/fuse
-    opts: defaults,subvol=/data,compress-force=zstd,autodefrag,nospace_cache
+    path: /mnt/tank
+    opts: defaults,compress-force=zstd,autodefrag,nospace_cache
     fstype: btrfs
     scrub: true
   - src: /dev/vda5
@@ -106,3 +106,19 @@ snapraid_config_excludes:
   - ".nfo"
   - ".minio.sys/"
   - "/.snapshots/"
+
+# btrbk configs
+btrbk_configs:
+  - name: tank-local
+    cron: daily
+    volume: /mnt/tank
+    snapshot_dir: .snapshots
+    snapshot_preserve_min: 2d
+    snapshot_preserve: 14d
+    target_preserve_min: 'no'
+    target_preserve: 20d 10w *m
+    timestamp_format: long
+    targets: []
+    subvolumes:
+      - 'fuse'
+      - 'appdata'

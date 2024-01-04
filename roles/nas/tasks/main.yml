@@ -8,6 +8,14 @@
   tags:
     - disks
 
+- name: btrfs
+  include_tasks:
+    file: btrfs.yml
+    apply:
+      tags: btrfs
+  tags:
+    - btrfs
+
 - name: snapraid
   include_tasks:
     file: snapraid.yml
