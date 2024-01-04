@@ -10,15 +10,14 @@
     - $HOME/.config/chezmoi
 
 - name: install chezmoi
-  become_user: "{{ user.username }}"
-  ansible.builtin.shell: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
+  ansible.builtin.shell: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /usr/local/bin
   args:
-    creates: $HOME/.local/bin/chezmoi
+    creates: /usr/local/bin/chezmoi
 
 - name: template chezmoi config
   become_user: "{{ user.username }}"
   ansible.builtin.template:
-    src: dot-config_chezmoi_chezmoi.toml.j2
+    src: .config/chezmoi/chezmoi.toml.j2
     dest: $HOME/.config/chezmoi/chezmoi.toml
     owner: "{{ user.username }}"
     group: "{{ user.group }}"
@@ -27,9 +26,12 @@
 - name: initialize and apply chezmoi dotfiles repository
   become_user: "{{ user.username }}"
   command:
-    cmd: ./chezmoi init --apply {{ chezmoi_repo }}
-    chdir: $HOME/.local/bin
+    cmd: chezmoi init --apply {{ chezmoi_repo }}
     creates: $HOME/.local/share/chezmoi
+
+- name: install starship
+  include_role: 
+    name: andrewrothstein.starship
 
 - name: install vim-plug
   become_user: "{{ user.username }}"
@@ -37,7 +39,8 @@
     cmd: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     creates: $HOME/.vim/autoload/plug.vim
 
-- name: install vim plugins
-  tags: never
-  become_user: "{{ user.username }}"
-  command: vim +'PlugInstall --sync' +qa
+# seems to hang indefinitely
+# - name: install vim plugins
+#   tags: never
+#   become_user: "{{ user.username }}"
+#   command: vim +'PlugInstall --sync' +qa

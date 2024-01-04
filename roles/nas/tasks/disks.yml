@@ -1,0 +1,33 @@
+---
+
+- name: mount data disks
+  tags: mount,fstab
+  mount:
+    fstype: "{{ item.fstype }}"
+    opts: "{{ item.opts }}"
+    path: "{{ item.path }}"
+    src: "{{ item.src}}"
+    backup: true
+    state: mounted
+  with_items:
+    - "{{ fstab_disks }}"
+    - "{{ snapraid_disks }}"
+    - "{{ mergerfs_disks }}"
+
+- name: Create a cron job for btrfs scrub
+  tags: cron,never
+  ansible.builtin.cron:
+    name: btrfs-scrub
+    minute: "00"
+    hour: "00"
+    day: "01"
+    month: "*"
+    weekday: "*"
+    user: root
+    job: "btrfs scrub start {{ item.path }}"
+    state: present
+    cron_file: btrfs-scrub{{ item.path | replace('/', '-') }}
+    backup: true
+  loop: "{{ fstab_disks }}"
+  when: item.fstype == 'btrfs' and (item.scrub | default('false')) 
+
