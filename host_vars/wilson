@@ -48,6 +48,7 @@ package_list:
   - name: smartmontools
   - name: libbtrfs-dev
   - name: btrfs-compsize
+  - name: btrbk
 
 flatpak_pkgs:
   - com.microsoft.Edge
@@ -58,27 +59,45 @@ systemd_services:
   - ufw
 
 # disks
-data_disks:
-  - src: /dev/disk/by-id/ata-SAMSUNG_HD501LJ_S0MUJ1GP729243-part1
+fstab_disks:
+  # - src: /dev/disk/by-id/ata-SAMSUNG_HD501LJ_S0MUJ1GP729243-part1
+  #   path: /mnt/disk1
+  #   opts: defaults
+  #   fstype: ext4
+  # - src: /dev/disk/by-id/ata-WD5003ABYX-88_LEN_WD-WMAYP8199250-part1
+  #   path: /mnt/disk2
+  #   opts: defaults
+  #   fstype: ext4
+
+  # btrfs raid1 mirror
+  - src: /dev/disk/by-uuid/1ba9b858-ec36-45ee-a217-0f709b039ebb
+    path: /mnt/tank
+    opts: defaults,compress-force=zstd,autodefrag,noatime
+    fstype: btrfs
+    scrub: true
+  
+  - src: /dev/disk/by-id/wwn-0x5000039872601ef4-part1
     path: /mnt/disk1
     opts: defaults
     fstype: ext4
+
+data_disks:
+  - path: /mnt/disk1
     snapraid_name: d1
-  - src: /dev/disk/by-id/ata-WD5003ABYX-88_LEN_WD-WMAYP8199250-part1
-    path: /mnt/disk2
-    opts: defaults
-    fstype: ext4
-    snapraid_name: d2
+    content_path: /mnt/disk1/.snapraid.content
+  # - path: /mnt/disk2
+  #   content_path: /mnt/disk2/.snapraid.content
+  #   snapraid_name: d2
 
 mergerfs_disks:
-  - src: /mnt/disk*
+  - src: /mnt/disk*:/mnt/tank/fuse
     path: /mnt/storage
     opts: defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,category.create=epmfs,dropcacheonclose=true,fsname=mergerfs,minfreespace=10G
     fstype: fuse.mergerfs
 
 snapraid_disks:
-  - src: /dev/disk/by-id/ata-TOSHIBA_HDWT840_73R3S1V3SRZH-part1
-    path: /mnt/parity
+  - src: /dev/disk/by-id/wwn-0x50014ee2613dbe76-part1
+    path: /mnt/parity1
     opts: defaults
     fstype: xfs
 
@@ -102,3 +121,19 @@ snapraid_config_excludes:
   - ".AppleDB"
   - ".nfo"
   - ".minio.sys/"
+  - "/.snapshots/"
+
+# btrbk configs
+btrbk_configs:
+  - name: tank
+    cron: daily
+    volume: /mnt/tank
+    snapshot_dir: .snapshots
+    snapshot_preserve_min: 2d
+    snapshot_preserve: 14d
+    target_preserve_min: 'no'
+    target_preserve: 20d 10w *m
+    timestamp_format: long
+    targets: []
+    subvolumes:
+      - 'fuse'
