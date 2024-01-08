@@ -1,0 +1,40 @@
+---
+
+- name: create volume directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - '{{ scrutiny.database_dir }}'
+    - '{{ scrutiny.config_dir }}'
+
+- name: template scrutiny config
+  ansible.builtin.template:
+    src: scrutiny.yaml.j2
+    dest: '{{ scrutiny.config_dir }}/scrutiny.yaml'
+    mode: "0644"
+
+- name: template collector config
+  ansible.builtin.template:
+    src: collector.yaml.j2
+    dest: '{{ scrutiny.config_dir }}/collector.yaml'
+    mode: "0644"
+
+- name: create container
+  community.docker.docker_container:
+    name: scrutiny
+    image: 'ghcr.io/analogj/scrutiny:master-omnibus'
+    state: started
+    restart: true
+    volumes:
+      - '/run/udev:/run/udev:ro'
+      - '{{ scrutiny.database_dir }}:/opt/scrutiny/influxdb'
+      - '{{ scrutiny.config_dir }}:/opt/scrutiny/config'
+    capabilities:
+      - SYS_RAWIO
+    devices: '{{ scrutiny.disks }}'
+    published_ports: '{{ scrutiny.webui_port }}:8080'
+
+
+    

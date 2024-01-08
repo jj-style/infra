@@ -101,6 +101,16 @@ snapraid_disks:
     opts: defaults
     fstype: xfs
 
+scrutiny:
+  database_dir: /opt/scrutiny/influx
+  config_dir: /opt/scrutiny/config
+  webui_port: 43743
+  disks:
+    - /dev/disk/by-id/wwn-0x5000c5006749ae4f # btrfs
+    - /dev/disk/by-id/wwn-0x5000039c656282ca # btrfs
+    - /dev/disk/by-id/wwn-0x5000039872601ef4 # disk1
+    - /dev/disk/by-id/wwn-0x50014ee2613dbe76 # parity1
+
 ## snapraid
 snapraid_config_excludes:
   - "*.unrecoverable"

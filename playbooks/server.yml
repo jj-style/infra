@@ -43,6 +43,11 @@
         tags: nas
       tags: nas
 
+    - role: scrutiny
+      apply:
+        tags: scrutiny
+      tags: scrutiny
+
     - role: diun
       apply:
         tags: diun
