@@ -1,0 +1,59 @@
+---
+
+- name: install btrfs apps
+  include_role:
+    name: grog.package
+  vars:
+    package_list:
+      - name: btrbk
+
+- name: Create a cron job for btrfs scrub
+  tags: cron,never
+  ansible.builtin.cron:
+    name: btrfs-scrub
+    minute: "00"
+    hour: "00"
+    day: "01"
+    month: "*"
+    weekday: "*"
+    user: root
+    job: "btrfs scrub start {{ item.path }}"
+    state: present
+    cron_file: btrfs-scrub{{ item.path | replace('/', '-') }}
+    backup: true
+  loop: "{{ fstab_disks }}"
+  when: item.fstype == 'btrfs' and (item.scrub | default('false')) 
+
+# btrbk
+
+- name: Create btrbk snapshot dirs
+  file:
+    dest: "{{item.volume}}/{{ item.snapshot_dir }}"
+    state: directory
+    owner: "{{ user.username }}"
+    group: "{{ user.group }}"
+    mode: 0600
+  with_items: 
+    - "{{ btrbk_configs }}"
+
+- name: Create btrbk configs
+  ansible.builtin.template:
+    src: etc/btrbk/btrbk.conf.j2
+    dest: /etc/btrbk/btrbk-{{item.name}}.conf
+    owner: "{{ user.username }}"
+    group: "{{ user.group }}"
+    mode: "0644"
+  loop: "{{ btrbk_configs }}"
+
+- name: Create cron schedule for btrbk snapshots
+  ansible.builtin.cron:
+    name: btrbk-{{ item.name }}
+    user: root
+    state: present
+    cron_file: btrbk-{{ item.name }}
+    backup: true
+    special_time: "{{ item.cron }}"
+    job: "btrbk -c /etc/btrbk/btrbk-{{item.name}}.conf -q run"
+  loop: "{{ btrbk_configs }}"
+  when: item.cron is defined
+

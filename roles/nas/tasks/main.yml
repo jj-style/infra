@@ -1,5 +1,41 @@
 ---
 
+- name: disks
+  include_tasks:
+    file: disks.yml
+    apply:
+      tags: disks
+  tags:
+    - disks
+
+- name: btrfs
+  include_tasks:
+    file: btrfs.yml
+    apply:
+      tags: btrfs
+  tags:
+    - btrfs
+
+- name: snapraid
+  include_tasks:
+    file: snapraid.yml
+    apply:
+      tags: snapraid
+  tags: snapraid
+
+- name: samba
+  include_tasks:
+    file: samba.yml
+    apply:
+      tags: samba
+  tags: samba
+
+- name: firewall
+  include_tasks:
+    file: ufw_firewall.yml
+    apply:
+      tags: firewall
+  tags: firewall
 
 - name: mask sleep/suspend services
   tags: systemd
@@ -12,53 +48,6 @@
     - hibernate.target
     - hybrid-sleep.target
 
-
-- name: mount data disks
-  tags: mount,fstab
-  mount:
-    fstype: "{{ item.fstype }}"
-    opts: "{{ item.opts }}"
-    path: "{{ item.path }}"
-    src: "{{ item.src}}"
-    backup: true
-    state: mounted
-  loop: "{{ data_disks | flatten(levels=1) }}"
-
-- name: mount mergerfs
-  tags: mount,fstab
-  mount:
-    fstype: "{{ item.fstype }}"
-    opts: "{{ item.opts }}"
-    path: "{{ item.path }}"
-    src: "{{ item.src}}"
-    backup: true
-    state: mounted
-  loop: "{{ mergerfs_disks | flatten(levels=1) }}"
-
-- name: mount snapraid parity drives
-  tags: mount,fstab
-  mount:
-    fstype: "{{ item.fstype }}"
-    opts: "{{ item.opts }}"
-    path: "{{ item.path }}"
-    src: "{{ item.src}}"
-    backup: true
-    state: mounted
-  loop: "{{ snapraid_disks | flatten(levels=1) }}"
-
-- block:
-  - include_tasks:
-      file: snapraid.yml
-      apply:
-        tags: snapraid
-    tags: snapraid
-  - include_tasks: services.yml
-  - include_tasks:
-      file: ufw_firewall.yml
-      apply:
-        tags: firewall,ufw
-    tags: firewall,ufw
-
 - name: Enable IPv4 forwarding
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward
@@ -66,24 +55,6 @@
     sysctl_set: yes
     state: present
     reload: yes
-
-- name: Run ProtonVPN Docker Container
-  tags: vpn,protonvpn
-  docker_container:
-    name: protonvpn
-    image: ghcr.io/tprasadtp/protonvpn:latest
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    capabilities:
-      - NET_ADMIN
-    restart_policy: unless-stopped
-    state: stopped
-    network_mode: host
-    env:
-      PROTONVPN_TIER: "{{ protonvpn.tier }}" 
-      PROTONVPN_USERNAME: "{{ protonvpn.username }}"
-      PROTONVPN_PASSWORD: "{{ protonvpn.password }}"
-      PROTONVPN_SERVER: "{{ protonvpn.server }}"
 
 - name: Write SSH Public Key
   become_user: "{{ user.username }}"

@@ -1,0 +1,15 @@
+---
+
+- name: mount data disks
+  tags: mount,fstab
+  mount:
+    fstype: "{{ item.fstype }}"
+    opts: "{{ item.opts }}"
+    path: "{{ item.path }}"
+    src: "{{ item.src}}"
+    backup: true
+    state: mounted
+  with_items:
+    - "{{ fstab_disks }}"
+    - "{{ snapraid_disks }}"
+    - "{{ mergerfs_disks }}"

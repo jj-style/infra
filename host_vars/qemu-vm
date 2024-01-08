@@ -5,41 +5,51 @@ user:
   name: JJ Style
   email: style.jj@pm.me
 
-hostname: qemu
+hostname: wilson
 
 ssh_public_keys:
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKs6D7W+lPdOTmr09wsv8YnPusuaxkQ0OadKQKyq4CMN ansible"
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICRUbVjKjmxaxiIOFzysNqF1+dTHPYPCOGlKKVfO2bxi samsung-s6l"
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPKIH9dy21Or2glbdRkaehiGQBA9fhqSLlteKS7otVH2 jj@xperia10"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxm8Qo66wmrE1O9lM9u1AmNpp1WRef3WrmQ5fjKNBEf jj@nixos"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILc4QgNqLOBwxneJnOHbPsv+tM9iTNRaIv+73yFemCLn jj@snowy"
 
-# applications
+# geerlinguy.docker
+docker_users:
+  - jj
 
-## general
-general_pkgs:
-  - vim
-  - tmux
-  - ranger
-  - fd-find
-  - ripgrep
-  - git
-  - fzf
-  - fonts-powerline 
-  - bat
-  - direnv
-  - curl
-  - wget
-  - rsync
+## grod.packages
+package_list:
+  - name: vim
+  - name: tmux
+  - name: ranger
+  - name: fd-find
+  - name: ripgrep
+  - name: git
+  - name: fzf
+  - name: fonts-powerline 
+  - name: bat
+  - name: direnv
+  - name: curl
+  - name: wget
+  - name: rsync
+  - name: flatpak
+  - name: easytag
+# server pkgs
+  - name: mergerfs
+  - name: btrfs-progs
+  - name: gddrescue
+  - name: xfsprogs
+  - name: samba
+  - name: avahi-daemon
+  - name: ufw
+  - name: sqlite3
+  - name: smartmontools
+  - name: libbtrfs-dev
+  - name: btrfs-compsize
+  - name: btrbk
 
-## server specific genericly named
-server_pkgs:
-  - mergerfs
-  - btrfs-progs
-  - samba
-  - avahi-daemon
-  - ufw
-  - sqlite3
-
-install_docker: true
+flatpak_pkgs: []
 
 systemd_services:
   - avahi-daemon
@@ -47,29 +57,33 @@ systemd_services:
   - ufw
 
 # disks
-data_disks:
-  - src: /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_SystemDisk-part2
-    path: /mnt/disk1
-    opts: defaults
-    fstype: ext4
-    snapraid_name: d1
-  - src: /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_SystemDisk-part3
+fstab_disks:
+  - src: /dev/vda2
+    path: /mnt/tank
+    opts: defaults,compress-force=zstd,autodefrag,nospace_cache
+    fstype: btrfs
+    scrub: true
+  - src: /dev/vda5
     path: /mnt/disk2
     opts: defaults
     fstype: ext4
-    snapraid_name: d2
 
-mergerfs_disks:
-  - src: /mnt/disk*
-    path: /mnt/storage
-    opts: defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,category.create=epmfs,dropcacheonclose=true,fsname=mergerfs,minfreespace=100M
-    fstype: fuse.mergerfs
+data_disks:
+  - path: /mnt/disk2
+    snapraid_name: d1
+    content_path: /mnt/disk2/.snapraid.content
 
 snapraid_disks:
-  - src: /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_SystemDisk-part4
-    path: /mnt/parity1
+  - src: /dev/vda6
+    path: /mnt/parity
     opts: defaults
-    fstype: ext4
+    fstype: xfs
+
+mergerfs_disks:
+  - src: /mnt/disk*:/mnt/tank/fuse
+    path: /mnt/storage
+    opts: defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,category.create=epmfs,dropcacheonclose=true,fsname=mergerfs,minfreespace=10M
+    fstype: fuse.mergerfs
 
 ## snapraid
 snapraid_config_excludes:
@@ -91,4 +105,20 @@ snapraid_config_excludes:
   - ".AppleDB"
   - ".nfo"
   - ".minio.sys/"
+  - "/.snapshots/"
 
+# btrbk configs
+btrbk_configs:
+  - name: tank-local
+    cron: daily
+    volume: /mnt/tank
+    snapshot_dir: .snapshots
+    snapshot_preserve_min: 2d
+    snapshot_preserve: 14d
+    target_preserve_min: 'no'
+    target_preserve: 20d 10w *m
+    timestamp_format: long
+    targets: []
+    subvolumes:
+      - 'fuse'
+      - 'appdata'
