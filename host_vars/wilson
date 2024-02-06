@@ -76,7 +76,12 @@ fstab_disks:
     fstype: btrfs
     scrub: true
   
-  - src: /dev/disk/by-id/wwn-0x5000039872601ef4-part1
+  # - src: /dev/disk/by-id/wwn-0x5000039872601ef4-part1
+  #   path: /mnt/disk1
+  #   opts: defaults
+  #   fstype: ext4
+
+  - src: /dev/disk/by-id/wwn-0x50014ee0593208bf-part1
     path: /mnt/disk1
     opts: defaults
     fstype: ext4
@@ -96,10 +101,10 @@ mergerfs_disks:
     fstype: fuse.mergerfs
 
 snapraid_disks:
-  - src: /dev/disk/by-id/wwn-0x50014ee2613dbe76-part1
+  - src: /dev/disk/by-id/wwn-0x5000039872601ef4-part1
     path: /mnt/parity1
     opts: defaults
-    fstype: xfs
+    fstype: ext4
 
 scrutiny:
   database_dir: /opt/scrutiny/influx
@@ -108,8 +113,8 @@ scrutiny:
   disks:
     - /dev/disk/by-id/wwn-0x5000c5006749ae4f # btrfs
     - /dev/disk/by-id/wwn-0x5000039c656282ca # btrfs
-    - /dev/disk/by-id/wwn-0x5000039872601ef4 # disk1
-    - /dev/disk/by-id/wwn-0x50014ee2613dbe76 # parity1
+    - /dev/disk/by-id/wwn-0x5000039872601ef4 # parity1
+    - /dev/disk/by-id/wwn-0x50014ee0593208bf-part1 # disk1
 
 ## snapraid
 snapraid_config_excludes:
