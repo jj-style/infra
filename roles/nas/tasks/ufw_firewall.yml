@@ -1,7 +1,7 @@
 - name: ufw allow ssh
   tags: firewall
   ufw:
-    rule: limit
+    rule: allow
     app: openssh
 
 - name: ufw allow Samba
