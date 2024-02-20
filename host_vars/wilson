@@ -81,7 +81,11 @@ fstab_disks:
   #   opts: defaults
   #   fstype: ext4
 
-  - src: /dev/disk/by-id/wwn-0x50014ee0593208bf-part1
+  #- src: /dev/disk/by-id/wwn-0x50014ee0593208bf-part1
+    #path: /mnt/disk1
+    #opts: defaults
+    #fstype: ext4
+  - src: /dev/disk/by-id/wwn-0x50000f001b729243-part1
     path: /mnt/disk1
     opts: defaults
     fstype: ext4
@@ -114,7 +118,7 @@ scrutiny:
     - /dev/disk/by-id/wwn-0x5000c5006749ae4f # btrfs
     - /dev/disk/by-id/wwn-0x5000039c656282ca # btrfs
     - /dev/disk/by-id/wwn-0x5000039872601ef4 # parity1
-    - /dev/disk/by-id/wwn-0x50014ee0593208bf-part1 # disk1
+    - /dev/disk/by-id/wwn-0x50000f001b729243-part1 # disk1
 
 ## snapraid
 snapraid_config_excludes:
