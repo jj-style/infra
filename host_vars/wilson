@@ -132,6 +132,7 @@ btrbk_configs:
     target_preserve_min: 'no'
     target_preserve: 20d 10w *m
     timestamp_format: long
-    targets: []
+    targets:
+      - ssh://snowy/mnt/backups
     subvolumes:
       - 'fuse'

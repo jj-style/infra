@@ -1,0 +1,18 @@
+keys:
+  - &admin_jj age1vvq5cg8x8x807v803608ehnu09aquvuzx9kcsmws02ly7cj5tg5smfkfyw
+  - &server_snowy_root age1w4cxs68za7k5g08pluxfw645dx85p7rdssl23azph5lrv0fg2pqqyjhetx
+  - &server_snowy_jj age1546pmdf9vwrdm45s959xc3us5z8xu2lpujdztmcw7lp8ejytcc8qrrxsur
+creation_rules:
+  - path_regex: secrets/secrets\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *admin_jj
+      - *server_snowy_root
+      - *server_snowy_jj
+
+  - path_regex: secrets/snowy\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *admin_jj
+      - *server_snowy_jj
+      - *server_snowy_root

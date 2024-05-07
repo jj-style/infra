@@ -53,7 +53,7 @@
     cron_file: btrbk-{{ item.name }}
     backup: true
     special_time: "{{ item.cron }}"
-    job: "btrbk -c /etc/btrbk/btrbk-{{item.name}}.conf -q run"
+    job: "btrbk -c /etc/btrbk/btrbk-{{item.name}}.conf -q run && curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/7aaadc8b-7ccc-4535-bf34-2793f5ac76e7" 
   loop: "{{ btrbk_configs }}"
   when: item.cron is defined
 
